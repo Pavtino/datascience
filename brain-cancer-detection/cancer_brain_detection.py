@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Sep 13 14:54:40 2024
 
-@author: HP
+
+@author:Martin Mbalkam
+brain cancer detection using CNN
 """
 import pandas as pd
 import numpy as np
@@ -20,10 +21,10 @@ from keras.callbacks import TensorBoard
 
 
 
-#create dataset
-s = r"C:\data"
-tumor_dir = os.path.join(s,'tumor', 'tumor')
-healthy_dir = os.path.join(s,'tumor', 'healthy')
+# Define the path to the dataset
+img_dir = r"C:\data"
+tumor_dir = os.path.join(img_dir,'tumor', 'tumor')
+healthy_dir = os.path.join(img_dir,'tumor', 'healthy')
 
 # Get the list of images
 tumor_images = os.listdir(tumor_dir)
@@ -40,16 +41,11 @@ def plot_images(img_paths, title):
     plt.show()
 
 # Plot tumor images
-plot_images([os.path.join(s,"tumor","tumor",img) for img in tumor_images[:25]], title='Tumor Images')
+plot_images([os.path.join(img_dir,"tumor","tumor",img) for img in tumor_images[:25]], title='Tumor Images')
 
 # Plot healthy images
-plot_images([os.path.join(s,"tumor","healthy",img)for img in healthy_images[:25]], title='Healthy Images')
+plot_images([os.path.join(img_dir,"tumor","healthy",img)for img in healthy_images[:25]], title='Healthy Images')
 
-
-
-
-# Define the path to the dataset
-base_dir = r"C:\data"
 
 # Initialize ImageDataGenerators with validation_split
 train_datagen = ImageDataGenerator(
@@ -65,7 +61,7 @@ train_datagen = ImageDataGenerator(
 )
 # Create data generators
 train_generator = train_datagen.flow_from_directory(
-    base_dir,
+    img_dir,
     target_size=(150, 150),
     batch_size=32,
     class_mode='binary',
@@ -73,7 +69,7 @@ train_generator = train_datagen.flow_from_directory(
 )
 
 validation_generator = train_datagen.flow_from_directory(
-    base_dir,
+    img_dir,
     target_size=(150, 150),
     batch_size=32,
     class_mode='binary',
